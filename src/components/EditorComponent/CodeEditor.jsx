@@ -1,5 +1,5 @@
 import Editor from "@monaco-editor/react";
-import { useRef } from "react";
+import { forwardRef, useId, useImperativeHandle, useRef } from "react";
 
 const options = {
 
@@ -19,7 +19,7 @@ const options = {
     }
 }
 
-function CodeEditor({height, defaultValue, onChange, language}) {
+function CodeEditor({height, defaultValue, onChange, language}, ref) {
 
     const editorRef = useRef(null);
 
@@ -36,6 +36,13 @@ function CodeEditor({height, defaultValue, onChange, language}) {
         editorRef.current = editor;
     }
 
+    useImperativeHandle(ref, () => {
+
+        return {
+            setValue: (value) => editorRef.current.setValue(value)
+        }
+    })
+
     return (<div className="CodeEditor">
 
         <Editor height={height} theme="vs-dark" language={language} defaultValue={defaultValue} onMount={onMount} onChange={change} options={options} />
@@ -43,4 +50,4 @@ function CodeEditor({height, defaultValue, onChange, language}) {
     </div>);
 }
 
-export default CodeEditor;
+export default forwardRef(CodeEditor);

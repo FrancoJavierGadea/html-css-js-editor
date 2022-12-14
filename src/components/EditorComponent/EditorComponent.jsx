@@ -1,41 +1,38 @@
-import { Accordion } from "react-bootstrap";
+import { useEffect, useRef, useState } from "react";
+import { Tab, Tabs } from "react-bootstrap";
 import CodeEditor from "./CodeEditor";
 
-//Codigo por defecto
-import defaultHtml from "../../assets/defaultCode/html.txt";
-import defaultCss from "../../assets/defaultCode/styles.txt";
-import defaultJs from "../../assets/defaultCode/js.txt";
 
-import { useEffect, useState } from "react";
-import PlayButton from "./PlayButton";
 
-const editorHeight = 'calc(100vh - 175px)';
+import StyledButton from "./StyledButton";
+import Brand from "./Brand";
 
-function EditorComponent({onChange}) {
 
-    const [select, setSelect] = useState('html');
+const editorHeight = 'calc(100vh - 48px)';
 
-    const [html, setHtml] = useState('');
+function EditorComponent({onChange, defaultCss = '', defaultHtml = '', defaultJs = ''}) {
 
-    const [css, setCss] = useState('');
+    const htmlRef = useRef(null);
 
-    const [js, setJs] = useState('');
+    const cssRef = useRef(null);
+
+    const jsRef = useRef(null);
+
+    const [html, setHtml] = useState(defaultHtml);
+
+    const [css, setCss] = useState(defaultCss);
+
+    const [js, setJs] = useState(defaultJs);
 
     useEffect(() => {
+
+        setHtml(defaultHtml);
+
+        setJs(defaultJs);
+
+        setCss(defaultCss);
         
-        fetch(defaultHtml)
-        .then(res => res.text())
-        .then(value => setHtml(value));
-
-        fetch(defaultCss)
-        .then(res => res.text())
-        .then(value => setCss(value));
-
-        fetch(defaultJs)
-        .then(res => res.text())
-        .then(value => setJs(value));
-    
-    }, []);
+    }, [defaultCss, defaultHtml, defaultJs]);
 
     useEffect(() => {
         
@@ -91,57 +88,91 @@ function EditorComponent({onChange}) {
     const changeJs = (value) =>  setJs(value);
     
 
-    const AccordionSelect = (value) => {
+    const load = ({target}) => {
 
-        if(value){
+        const file = target.files[0];
+        
+        const reader = new FileReader();
 
-            setSelect(value);
+        reader.onload = () => {
+
+            console.log(reader.result);
+
+            switch(file.type){
+
+                case 'text/html':
+                    setHtml(reader.result);
+                    htmlRef.current.setValue(reader.result);
+                    break;
+
+                case 'text/css':
+                    setCss(reader.result);
+                    cssRef.current.setValue(reader.result);
+                    break;    
+
+                case 'text/javascript':
+                    setJs(reader.result);
+                    jsRef.current.setValue(reader.result);
+                    break;
+            }
         }
-        else {
 
-            setSelect('html');
-        }
+        reader.readAsText(file);
     }
 
     return (<div className="EditorComponent">
 
-        <Accordion activeKey={select} onSelect={AccordionSelect} flush>
+        <Tabs defaultActiveKey="html" fill justify style={{backgroundColor: '#676767'}}>
 
-            <Accordion.Item eventKey="html">
+            <Tab eventKey="html" title={<Brand name="html" title="HTML"/>}>
+                <div className="position-relative">
 
-                <Accordion.Header> <i className="bi bi-filetype-html" style={{fontSize: '21px'}}></i> <b className="mx-2">HTML</b> </Accordion.Header>
+                    <CodeEditor height={editorHeight} language="html" defaultValue={defaultHtml} onChange={changeHtml} ref={htmlRef}></CodeEditor>
+                
+                    <StyledButton bottom="5px" right="20px" size="25px" title="Cargar HTML">
+                        <label>
+                            <i className="bi bi-upload"></i>
+                            <input className="d-none" type="file" accept=".html" onChange={load} />
+                        </label>
+                    </StyledButton>
 
-                <Accordion.Body className="p-0">
-                    <CodeEditor height={editorHeight} language="html" defaultValue={html} onChange={changeHtml}></CodeEditor>
-                </Accordion.Body>
+                </div>
+            </Tab>
 
-            </Accordion.Item>
+            <Tab eventKey="css" title={<Brand name="css" title="CSS"/>}>
+                <div className="position-relative">
 
-            <Accordion.Item eventKey="css">
+                    <CodeEditor height={editorHeight} language="css" defaultValue={defaultCss} onChange={changeCss} ref={cssRef}></CodeEditor>
+                
+                    <StyledButton bottom="5px" right="20px" size="25px" title="Cargar CSS">
+                        <label>
+                            <i className="bi bi-upload"></i>
+                            <input className="d-none" type="file" accept=".css" onChange={load} />
+                        </label>
+                    </StyledButton>
 
-                <Accordion.Header> <i className="bi bi-filetype-css" style={{fontSize: '21px'}}></i> <b className="mx-2">CSS</b> </Accordion.Header>
+                </div>
+            </Tab>
 
-                <Accordion.Body className="p-0">
-                    <CodeEditor height={editorHeight} language="css" defaultValue={css} onChange={changeCss}></CodeEditor>
-                </Accordion.Body>
+            <Tab eventKey="js" title={<Brand name="js" title="JavaScript"/>}>
+                <div className="position-relative">
 
-            </Accordion.Item>
+                    <CodeEditor height={editorHeight} language="javascript" defaultValue={defaultJs} onChange={changeJs} ref={jsRef}></CodeEditor>
 
-            <Accordion.Item eventKey="js">
+                    <StyledButton top="0px" right="20px" size="40px" onClick={runJs} title="Ejecutar JavaScript">
+                        <i className="bi bi-play-fill"></i>
+                    </StyledButton>
 
-                <Accordion.Header> <i className="bi bi-filetype-js" style={{fontSize: '21px'}}></i> <b className="mx-2">JS</b> </Accordion.Header>
+                    <StyledButton bottom="5px" right="20px" size="25px" title="Cargar JavaScript">
+                        <label>
+                            <i className="bi bi-upload"></i>
+                            <input className="d-none" type="file" accept=".js" onChange={load} />
+                        </label>
+                    </StyledButton>
+                </div>
+            </Tab>
 
-                <Accordion.Body className="p-0">
-                    <div className="position-relative">
-
-                        <CodeEditor height={editorHeight} language="javascript" defaultValue={js} onChange={changeJs}></CodeEditor>
-                        
-                        <PlayButton top="0px" right="20px" size="30px" onClick={runJs} title="Ejecutar Javascript"></PlayButton>
-                    </div>
-                </Accordion.Body>
-
-            </Accordion.Item>
-        </Accordion>
+        </Tabs>
 
     </div>);
 }
