@@ -28,6 +28,19 @@ const Button = styled.div`
         color: #8e8e8e;
         font-size: calc(${props => props.size ? props.size : '18px'} + 1px);
     }
+
+    a {
+        color: white;
+    }
+
+    a:hover {
+        color: #c5c5c5;
+        filter: drop-shadow(0px 0px 1px #c77ff4);
+    }
+    a:active {
+        color: #8e8e8e;
+        font-size: calc(${props => props.size ? props.size : '18px'} + 1px);
+    }
 `;
 
 function StyledButton({onClick, children, title, size, top, left, right, bottom}) {

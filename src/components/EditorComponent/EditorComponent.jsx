@@ -4,7 +4,7 @@ import CodeEditor from "./CodeEditor";
 
 
 
-import StyledButton from "./StyledButton";
+import StyledButton from "../Styled/StyledButton";
 import Brand from "./Brand";
 
 
@@ -34,6 +34,8 @@ function EditorComponent({onChange, defaultCss = '', defaultHtml = '', defaultJs
         
     }, [defaultCss, defaultHtml, defaultJs]);
 
+
+
     useEffect(() => {
         
         const doc = document.implementation.createHTMLDocument();
@@ -47,12 +49,17 @@ function EditorComponent({onChange, defaultCss = '', defaultHtml = '', defaultJs
             styles.innerHTML = css;
 
         doc.head.appendChild(styles);
-       
 
         onChange(doc);
 
     }, [html, css]);
 
+
+    const changeHtml = (value) => setHtml(value);
+    
+    const changeCss = (value) => setCss(value);
+
+    const changeJs = (value) => setJs(value);
 
     const runJs = () => {
 
@@ -75,19 +82,12 @@ function EditorComponent({onChange, defaultCss = '', defaultHtml = '', defaultJs
 
         doc.body.appendChild(script);
         
-
         onChange(doc);
     }
-
+         
     
 
-    const changeHtml = (value) => setHtml(value);
-    
-    const changeCss = (value) => setCss(value);
-    
-    const changeJs = (value) =>  setJs(value);
-    
-
+    //? Cargar un Archivo
     const load = ({target}) => {
 
         const file = target.files[0];
@@ -95,8 +95,6 @@ function EditorComponent({onChange, defaultCss = '', defaultHtml = '', defaultJs
         const reader = new FileReader();
 
         reader.onload = () => {
-
-            console.log(reader.result);
 
             switch(file.type){
 
@@ -119,6 +117,7 @@ function EditorComponent({onChange, defaultCss = '', defaultHtml = '', defaultJs
 
         reader.readAsText(file);
     }
+
 
     return (<div className="EditorComponent">
 

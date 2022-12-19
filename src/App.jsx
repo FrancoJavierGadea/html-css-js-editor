@@ -12,6 +12,8 @@ import EditorComponent from "./components/EditorComponent/EditorComponent";
 import defaultHtml from "./assets/defaultCode/html.txt";
 import defaultCss from "./assets/defaultCode/styles.txt";
 import defaultJs from "./assets/defaultCode/js.txt";
+import StyledButton from "./components/Styled/StyledButton";
+import RenderComponent from "./components/RenderComponent/RenderComponent";
 
 function App() {
 
@@ -62,7 +64,7 @@ function App() {
 
           <Col className="m-0 p-0" xs={6}>
 
-            <iframe srcDoc={doc} style={{height: '100%', width: '100%'}}></iframe>
+            <RenderComponent document={doc}></RenderComponent>
 
           </Col>
         </Row>
