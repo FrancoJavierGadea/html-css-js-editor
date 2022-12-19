@@ -4,47 +4,21 @@ import { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
-import { Col, Container, Row } from "react-bootstrap";
-
 import EditorComponent from "./components/EditorComponent/EditorComponent";
+import Split from 'react-split';
+import RenderComponent from "./components/RenderComponent/RenderComponent";
 
 //Codigo por defecto
-import defaultHtml from "./assets/defaultCode/html.txt";
-import defaultCss from "./assets/defaultCode/styles.txt";
-import defaultJs from "./assets/defaultCode/js.txt";
-import StyledButton from "./components/Styled/StyledButton";
-import RenderComponent from "./components/RenderComponent/RenderComponent";
+import defaultTemplate from "./assets/templates/default.json";
+import bootstrapTemplate from "./assets/templates/bootstrap.json";
 
 function App() {
 
-  const [values, setValues] = useState({});
-
-  //Cargar valores por defecto
-  useEffect(() => {
-
-    const load = async () => {
-
-      try {
-
-        setValues({
-          html: await (await fetch(defaultHtml)).text(),
-
-          css: await (await fetch(defaultCss)).text(),
-
-          js: await (await fetch(defaultJs)).text()
-        })
-      }
-      catch (error) {}
-    }
-
-    load();
-
-  }, []);
-
+  const [values, setValues] = useState(bootstrapTemplate);
 
   const [doc, setDoc] = useState(null);
 
-  const changeDocument = (document) => {
+  const changeDocument = (document, code) => {
 
     setDoc(new String(document.documentElement.innerHTML));
   } 
@@ -54,22 +28,18 @@ function App() {
   return (
     <div className="App bg-dark m-0 p-0 overflow-hidden" style={{minHeight: '100vh'}}>
 
-      <Container fluid>
-        <Row>
-          <Col className="m-0 p-0" xs={6}>
+      <Split className="split" sizes={[50, 50]} minSize={200} gutterSize={10}>
 
-            <EditorComponent onChange={changeDocument} defaultHtml={values.html} defaultCss={values.css} defaultJs={values.js}></EditorComponent>
+        <div>
+          <EditorComponent onChange={changeDocument} defaultHtml={values.html} defaultCss={values.css} defaultJs={values.js}></EditorComponent>
+        </div>
 
-          </Col>
+        <div>
+          <RenderComponent document={doc}></RenderComponent>
+        </div>
 
-          <Col className="m-0 p-0" xs={6}>
+      </Split>
 
-            <RenderComponent document={doc}></RenderComponent>
-
-          </Col>
-        </Row>
-      </Container>
-      
     </div>
   );
 }

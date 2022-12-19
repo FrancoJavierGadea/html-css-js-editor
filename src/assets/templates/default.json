@@ -1,0 +1,7 @@
+{
+    "html":"<!DOCTYPE html>\r\n\r\n<html lang=\"en\">\r\n    <head>\r\n        <meta charset=\"UTF-8\">\r\n        <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\r\n        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n        <title>Editor Code</title>\r\n    </head>\r\n    <body>\r\n        <h1>Hello World</h1>\r\n    </body>\r\n</html>",
+    
+    "css":"* {\r\n    margin: 0;\r\n    padding: 0;\r\n}\r\n\r\nbody {\r\n    background-color: rgb(83, 204, 248);\r\n}",
+    
+    "js":"console.log('Funciona');"
+}

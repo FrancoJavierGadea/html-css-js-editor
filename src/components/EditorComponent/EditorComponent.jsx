@@ -50,7 +50,7 @@ function EditorComponent({onChange, defaultCss = '', defaultHtml = '', defaultJs
 
         doc.head.appendChild(styles);
 
-        onChange(doc);
+        onChange(doc, {html, css, js});
 
     }, [html, css]);
 
@@ -82,7 +82,7 @@ function EditorComponent({onChange, defaultCss = '', defaultHtml = '', defaultJs
 
         doc.body.appendChild(script);
         
-        onChange(doc);
+        onChange(doc, {html, css, js});
     }
          
     
