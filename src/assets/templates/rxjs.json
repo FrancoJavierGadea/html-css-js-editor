@@ -1,0 +1,9 @@
+{
+    "name": "RXjs Template",
+
+    "html":"<!DOCTYPE html>\r\n\r\n<html lang=\"en\">\r\n    <head>\r\n        <meta charset=\"UTF-8\">\r\n        <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\r\n        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n        <title>Editor Code</title>\r\n    </head>\r\n    <body>\r\n        <div id=\"container\"></div>\r\n\r\n        <!-- RXjs -->\r\n        <script src=\"https://unpkg.com/rxjs@^7/dist/bundles/rxjs.umd.min.js\"></script>\r\n    </body>\r\n</html>",
+    
+    "css":"* {\r\n    margin: 0;\r\n    padding: 0;\r\n}\r\n\r\nbody {\r\n    background-color: rgb(130, 230, 152);\r\n}\r\n\r\n#container {\r\n    margin-top: 50px;\r\n    display: flex;\r\n    justify-content: space-evenly;\r\n}\r\n\r\n#container span {\r\n    font-size: 30px;\r\n}",
+    
+    "js":"const { of, map, concatMap, delay } = rxjs;\r\n\r\nconst values = ['😀', '😂', '🙄', '💀', '❤', '😱'];\r\n\r\nconst observable$ = of(...values).pipe(\r\n\r\n    concatMap(value => {\r\n        \r\n        return of(value).pipe(delay(1000));\r\n    }),\r\n\r\n    map(value => {\r\n\r\n        console.log(value);\r\n        \r\n        let span = document.createElement('span');\r\n\r\n        span.textContent = value;\r\n\r\n        return span;\r\n    })\r\n);\r\n\r\nobservable$.subscribe(value => {\r\n\r\n    const $container = document.getElementById('container');\r\n\r\n    $container.appendChild(value);\r\n});"
+}

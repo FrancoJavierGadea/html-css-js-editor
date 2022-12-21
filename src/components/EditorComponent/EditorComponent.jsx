@@ -3,14 +3,12 @@ import { Tab, Tabs } from "react-bootstrap";
 import CodeEditor from "./CodeEditor";
 
 
-
 import StyledButton from "../Styled/StyledButton";
+
 import Brand from "./Brand";
 
 
-const editorHeight = 'calc(100vh - 48px)';
-
-function EditorComponent({onChange, defaultCss = '', defaultHtml = '', defaultJs = ''}) {
+function EditorComponent({onChange, defaultCss = '', defaultHtml = '', defaultJs = '', height = '50vh'}) {
 
     const htmlRef = useRef(null);
 
@@ -126,7 +124,7 @@ function EditorComponent({onChange, defaultCss = '', defaultHtml = '', defaultJs
             <Tab eventKey="html" title={<Brand name="html" title="HTML"/>}>
                 <div className="position-relative">
 
-                    <CodeEditor height={editorHeight} language="html" defaultValue={defaultHtml} onChange={changeHtml} ref={htmlRef}></CodeEditor>
+                    <CodeEditor height={height} language="html" defaultValue={defaultHtml} onChange={changeHtml} ref={htmlRef}></CodeEditor>
                 
                     <StyledButton bottom="5px" right="20px" size="25px" title="Cargar HTML">
                         <label>
@@ -141,7 +139,7 @@ function EditorComponent({onChange, defaultCss = '', defaultHtml = '', defaultJs
             <Tab eventKey="css" title={<Brand name="css" title="CSS"/>}>
                 <div className="position-relative">
 
-                    <CodeEditor height={editorHeight} language="css" defaultValue={defaultCss} onChange={changeCss} ref={cssRef}></CodeEditor>
+                    <CodeEditor height={height} language="css" defaultValue={defaultCss} onChange={changeCss} ref={cssRef}></CodeEditor>
                 
                     <StyledButton bottom="5px" right="20px" size="25px" title="Cargar CSS">
                         <label>
@@ -156,7 +154,7 @@ function EditorComponent({onChange, defaultCss = '', defaultHtml = '', defaultJs
             <Tab eventKey="js" title={<Brand name="js" title="JavaScript"/>}>
                 <div className="position-relative">
 
-                    <CodeEditor height={editorHeight} language="javascript" defaultValue={defaultJs} onChange={changeJs} ref={jsRef}></CodeEditor>
+                    <CodeEditor height={height} language="javascript" defaultValue={defaultJs} onChange={changeJs} ref={jsRef}></CodeEditor>
 
                     <StyledButton top="0px" right="20px" size="40px" onClick={runJs} title="Ejecutar JavaScript">
                         <i className="bi bi-play-fill"></i>
