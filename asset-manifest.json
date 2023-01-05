@@ -1,18 +1,15 @@
 {
   "files": {
-    "main.css": "/html-css-js-editor/static/css/main.bb98e085.css",
-    "main.js": "/html-css-js-editor/static/js/main.a2a587b9.js",
+    "main.css": "/html-css-js-editor/static/css/main.8f761a5b.css",
+    "main.js": "/html-css-js-editor/static/js/main.86e9341a.js",
     "static/media/bootstrap-icons.woff?": "/html-css-js-editor/static/media/bootstrap-icons.6959d0d983ee318f8880.woff",
     "static/media/bootstrap-icons.woff2?": "/html-css-js-editor/static/media/bootstrap-icons.b2e5aab643c6f0fd2da6.woff2",
     "index.html": "/html-css-js-editor/index.html",
-    "static/media/html.txt": "/html-css-js-editor/static/media/html.ed76d24eea98d95cade9.txt",
-    "static/media/styles.txt": "/html-css-js-editor/static/media/styles.830de547f43d051d2f30.txt",
-    "static/media/js.txt": "/html-css-js-editor/static/media/js.7189c236f253ad536c0e.txt",
-    "main.bb98e085.css.map": "/html-css-js-editor/static/css/main.bb98e085.css.map",
-    "main.a2a587b9.js.map": "/html-css-js-editor/static/js/main.a2a587b9.js.map"
+    "main.8f761a5b.css.map": "/html-css-js-editor/static/css/main.8f761a5b.css.map",
+    "main.86e9341a.js.map": "/html-css-js-editor/static/js/main.86e9341a.js.map"
   },
   "entrypoints": [
-    "static/css/main.bb98e085.css",
-    "static/js/main.a2a587b9.js"
+    "static/css/main.8f761a5b.css",
+    "static/js/main.86e9341a.js"
   ]
 }
