@@ -8,7 +8,7 @@ import StyledButton from "../Styled/StyledButton";
 import Brand from "./Brand";
 
 
-function EditorComponent({onChange, defaultCss = '', defaultHtml = '', defaultJs = '', height = '50vh'}) {
+function EditorComponent({onChange, defaultCss = '', defaultHtml = '', defaultJs = '', height = '50vh', react}) {
 
     const htmlRef = useRef(null);
 
@@ -75,6 +75,8 @@ function EditorComponent({onChange, defaultCss = '', defaultHtml = '', defaultJs
 
         //Add JS
             const script = doc.createElement('script');
+
+            if(react) script.setAttribute('type', 'text/babel');
 
             script.textContent = js;
 

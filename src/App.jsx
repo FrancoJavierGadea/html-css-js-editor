@@ -42,7 +42,7 @@ function App() {
 			<Split className="split" sizes={[50, 50]} minSize={200} gutterSize={10}>
 
 				<div>
-					<EditorComponent height={editorHeight} onChange={changeDocument} defaultHtml={currentTemplate.html} defaultCss={currentTemplate.css} defaultJs={currentTemplate.js}></EditorComponent>
+					<EditorComponent height={editorHeight} onChange={changeDocument} defaultHtml={currentTemplate.html} defaultCss={currentTemplate.css} defaultJs={currentTemplate.js} react={currentTemplate.react}></EditorComponent>
 				</div>
 
 				<div>
