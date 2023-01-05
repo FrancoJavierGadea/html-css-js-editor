@@ -1,31 +1,21 @@
-import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
+import { forwardRef, useContext, useImperativeHandle, useRef, useState } from "react";
 import { Button, Offcanvas } from "react-bootstrap";
+import { TemplatesContext } from "../TemplatesContext/TemplatesContext";
+import { types } from "../TemplatesContext/TemplatesReducers";
 
-//templates
-import defaultTemplates from "../../assets/templates/templates";
-import { load, save } from "../../services/SaveTemplateService";
-import TemplatesModal from "./TemplatesModal";
+import TemplatesButton from "./TemplatesButton";
+import DeleteAllTemplatesModal from "./DeleteAllTemplatesModal";
+import AddTemplateModal from "./AddTemplateModal";
+
+import { getDownloadUrl } from "../../services/JSONDownloader";
+import { loadTemplates } from "../../services/TemplatesLoader";
 
 
 
-function TemplatesOptionsComponent({onChange, code}, ref) {
+function TemplatesOptionsComponent({code}, ref) {
 
-    const [templates, setTemplates] = useState( [...Object.values(defaultTemplates), ...load()] );
+    const {templates, dispatch, setCurrentTemplate} = useContext(TemplatesContext);
 
-    const [currentTemplate, setCurrentTemplate] = useState(defaultTemplates.default);
-
-    useEffect(() => {
-
-        onChange(currentTemplate);
-        
-    }, [currentTemplate]);
-
-    const changeTemplate = ({target: {value}}) => {
-
-        setCurrentTemplate(templates[value]);
-
-        setShow(false);
-    }
 
     //* Offcanvas
     const [show, setShow] = useState(false);
@@ -34,27 +24,58 @@ function TemplatesOptionsComponent({onChange, code}, ref) {
 
     const handleShow = () => setShow(true);
 
-    //* Modal
-    const templatesModalRef = useRef({});
 
-    const showTemplatesModal = () => {
+    //* Add Template Modal
+    const addTemplateModalRef = useRef({});
 
-        templatesModalRef.current.show();
+    const showAddTemplateModal = () => {
 
-        setShow(false);
+        addTemplateModalRef.current.show();
+        handleClose();
+    }
+    
+    //* Delete All Templates Modal
+    const deleteAllTemplatesModalRef = useRef({});
+
+    const showDeleteAllTemplatesModal = () => {
+
+        deleteAllTemplatesModalRef.current.show();
+        handleClose();
+    }
+    
+
+    const addTemplate = (name) => {
+
+        dispatch({
+            type: types.add,
+            payload: {
+                template: {name, ...code}
+            } 
+        });
+
+        setCurrentTemplate({name, ...code});
     }
 
-    //? Guardar Template
-    const saveTemplate = (name) => {
+    const deteleAll = () => {
 
-        let template = save({name, ...code});
+        dispatch({type: types.deleteAll});
 
-        if(currentTemplate){
+        setCurrentTemplate(templates.defaultTemplates.default);
+    }
 
-            setTemplates([...templates, template]);
+    const cargarTemplates = ({target}) => {
 
-            setCurrentTemplate(template);
-        }
+        loadTemplates(target.files).then(values => {
+
+            dispatch({
+                type: types.load, 
+                payload: {templates: values}
+            });
+        })
+        .catch(error => {
+
+            console(error);
+        });
     }
 
 
@@ -63,13 +84,15 @@ function TemplatesOptionsComponent({onChange, code}, ref) {
         return {
             show: handleShow,
             hide: handleClose,
-            showTemplatesModal
+            showAddTemplateModal
         }
     });
 
     return (<div className="TemplatesOptionsComponent">
 
-        <TemplatesModal ref={templatesModalRef} onChange={saveTemplate}/>
+        <AddTemplateModal ref={addTemplateModalRef} onChange={addTemplate} />
+
+        <DeleteAllTemplatesModal ref={deleteAllTemplatesModalRef} onChange={deteleAll} />
 
         <Offcanvas show={show} onHide={handleClose} >
 
@@ -78,17 +101,34 @@ function TemplatesOptionsComponent({onChange, code}, ref) {
             </Offcanvas.Header>
 
             <Offcanvas.Body className="position-relative">
-                <div className="d-flex flex-column">
+                <div className="d-flex flex-column overflow-auto" style={{maxHeight: '90%'}}>
                     {
-                        templates.map((value, index) => {
+                        Object.values(templates.defaultTemplates).map((value, index) => {
 
-                            return <Button className="mb-2 border-0 border-bottom border-info rounded-0 text-start" variant="outline-secondary" value={index} onClick={changeTemplate} key={index}>{value.name}</Button>        
+                            return <TemplatesButton showOptions={false} template={value} key={'dt-' + index} hide={handleClose}></TemplatesButton>
+                        })
+                    }
+                    {
+                        Object.values(templates.savedTemplates).map((value, index) => {
+
+                            return <TemplatesButton template={value} key={'st-' + index} hide={handleClose}></TemplatesButton>
                         })
                     }
                 </div>
 
-                <div className="position-absolute d-flex justify-content-evenly" style={{bottom: '15px'}}>
-                    <Button onClick={showTemplatesModal}>Guardar Template</Button>
+                <div className="position-absolute d-flex justify-content-evenly w-100" style={{bottom: '15px', left: 0}}>
+
+                    <Button className="px-4" variant="primary" onClick={showAddTemplateModal} title="Guardar Template"><i className="bi bi-plus-square"></i></Button>
+                    
+                    <Button className="px-4" variant="success" title="Descargar Todos" href={getDownloadUrl(templates.savedTemplates)} download="saved-templates.json"><i className="bi bi-download"></i></Button>
+                    
+                    <label className="px-4 btn btn-secondary" title="Cargar Template">
+                        <input className="d-none" type="file" accept=".json" multiple onChange={cargarTemplates} />
+                        <i className="bi bi-upload"></i>
+                    </label>
+                    
+                    
+                    <Button className="px-4" variant="danger" onClick={showDeleteAllTemplatesModal} title="Borrar Todos"><i className="bi bi-trash"></i></Button>
                 </div>
             </Offcanvas.Body>
 
