@@ -31,7 +31,7 @@ function App() {
 
 		setDoc(new String(document.documentElement.innerHTML));
 
-		setCode(code);
+		setCode({...code, react: currentTemplate.react});
 	} 
 
 	const templatesOptionsRef = useRef({});
@@ -61,6 +61,9 @@ function App() {
 			
 				<Button position="right" className="text-light border-0" variant="outline-secondary" size="sm" onClick={() => console.clear()}>Limpiar consola</Button>
 			
+				{
+					currentTemplate.react ? <span position="right" className="btn btn-sm btn-outline-secondary text-light border-0" title="Modo React activado">React</span> : ''
+				}
 			</OptionsComponent>
 
 		</div>

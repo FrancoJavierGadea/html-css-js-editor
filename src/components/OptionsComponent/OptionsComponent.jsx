@@ -4,17 +4,17 @@ function OptionsComponent({children}) {
 
     const left = Children.toArray(children).filter(value => {
 
-        return value.props.position === 'left';
+        return value.props?.position === 'left';
     });
 
     const center = Children.toArray(children).filter(value => {
 
-        return value.props.position === 'center';
+        return value.props?.position === 'center';
     });
 
     const right = Children.toArray(children).filter(value => {
 
-        return value.props.position === 'right';
+        return value.props?.position === 'right';
     });
 
     return (<div className="OptionsComponent px-2 d-flex justify-content-between" style={{backgroundColor: '#007ACC'}}>

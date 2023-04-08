@@ -1,5 +1,9 @@
 import Editor from "@monaco-editor/react";
 import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
+import { emmetHTML, emmetCSS, emmetJSX } from 'emmet-monaco-es';
+
+
+
 
 const options = {
 
@@ -38,6 +42,17 @@ function CodeEditor({height, defaultValue = '', onChange, language}, ref) {
     const onMount = (editor, monaco) => {
         
         //editor.onKeyUp(change);
+
+        //! Plugins
+
+            //? Emmet
+            emmetHTML(monaco, ['html']);
+            emmetCSS(monaco, ['css']);
+            emmetJSX(monaco, ['javascript']);
+
+
+            
+        //*/
         
         editorRef.current = editor;
     }
