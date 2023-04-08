@@ -48,6 +48,14 @@ function AddTemplateModal({onChange}, ref) {
     }
 
 
+    const handlerSubmit = (e) => {
+
+        e.preventDefault();
+
+        save();
+    }
+
+
     useImperativeHandle(ref, () => {
 
         return { show: handleShow, hide: handleClose };
@@ -79,7 +87,7 @@ function AddTemplateModal({onChange}, ref) {
                     : ''
                 }
 
-                <Form>
+                <Form onSubmit={handlerSubmit}>
                     <Form.Group className="my-2">
                         
                         <Form.Label>Escribe un nombre</Form.Label>
